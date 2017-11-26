@@ -3,6 +3,7 @@
 using namespace std;
 
 string board[18][18];
+int graph[324][324];
 int Bcount = 1;
 int Rcount = 1;
 int r =0;
@@ -21,14 +22,14 @@ void count();
 void usermovecheck();
 void userkillcheck();
 void kingcheck();
-void userKingMoveCheck();
+//void userKingMoveCheck();
 void userKingKillCheck();
 
 int main() {
     int menu=0;
     
     while(menu!=3){
-        cout<<""<<endl
+        cout<<"---CHECKERS MENU---"<<endl
         <<"1. 1 player"<<endl
         <<"2. 2 players"<<endl
         <<"3. Exit"<<endl;
@@ -46,6 +47,8 @@ int main() {
         if(menu == 2){
             printboard();
             while(Bcount!=0||Rcount!=0){
+                userinput();
+                updateboard();
                 count();
             }
         }
@@ -147,7 +150,7 @@ void printboard(){
     for(int i = 12; i<13; i++){
         for(int j = 4; j<18;j++){
             board[i][j] = " ";
-            board[i][j-2] = "R";    //testing kings in front (change back to "r" to test regular pieces in front)
+            board[i][j-2] = "r";    //testing kings in front (change back to "r" to test regular pieces in front)
             j++;
             j++;
             j++;
@@ -173,8 +176,8 @@ void printboard(){
             j++;
         }
     }
-    board[10][4] = "b"; //test jump
-    board[10][8] = "B"; //test jump
+//    board[10][4] = "b"; //test jump
+//    board[10][8] = "B"; //test jump
     
     //Prints out board
     for(int i =0;i<18;i++){
@@ -298,7 +301,7 @@ void userinput(){
         r1=rowinput();
         
         if(board[r][c]=="R"){
-            userKingMoveCheck();
+            //userKingMoveCheck();
         }
         else{
             userkillcheck();
@@ -347,7 +350,7 @@ void usermovecheck(){
     }
     else{
         legal = false;
-        cout<<"Error. Choose your chess piece."<<endl;
+        cout<<"Error. Choose your checker piece."<<endl;
         return;
     }
     if(r==r1&&c==c1){
@@ -396,7 +399,7 @@ void kingcheck(){
         if(board[2][i] == "r"){
             board[2][i] = "R";
         }
-        if(board[16][i]== "b"){
+        if(board[16][i] == "b"){
             board[16][i] = "B";
         }
     }
@@ -488,7 +491,6 @@ void count(){
         }
     }
     Bcount--;// to take the count off the B labeling the column
-    cout<<Rcount<<Bcount;
+    cout << "Red checkers left = " << Rcount << endl;
+    cout << "Black checkers left = " << Bcount << endl;
 }
-
-
