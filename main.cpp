@@ -1,9 +1,19 @@
 #include <iostream>
+#include <list>
 #include "checkers.hpp"
 using namespace std;
 
+class Graph
+{
+    int V; // vertices
+    list<int> *adj; // Pointer to an array containing adjacency lists
+public:
+    Graph(int V); // Constructor
+    void addEdge(int v, int w); // function to add an edge to graph
+    bool isReachable(int s, int d); // returns true if there is a path from s to d
+};
+
 string board[18][18];
-int graph[324][324];
 int Bcount = 1;
 int Rcount = 1;
 int r =0;
@@ -25,6 +35,12 @@ void kingcheck();
 //void userKingMoveCheck();
 void userKingKillCheck();
 
+//graph variables and functions
+int path[32];
+int pindex = 0;
+Graph g(32);
+void buildGraph();
+
 int main() {
     int menu=0;
     
@@ -38,6 +54,7 @@ int main() {
         
         if(menu == 1){
             printboard();
+            buildGraph();
             while(Bcount!=0||Rcount!=0){
                 userinput();
                 updateboard();
@@ -493,4 +510,121 @@ void count(){
     Bcount--;// to take the count off the B labeling the column
     cout << "Red checkers left = " << Rcount << endl;
     cout << "Black checkers left = " << Bcount << endl;
+}
+Graph::Graph(int V)
+{
+    this->V = V;
+    adj = new list<int> [V];
+}
+
+void Graph::addEdge(int v, int w)
+{
+    adj[v].push_back(w); // Add w to v’s list.
+}
+
+// A BFS based function to check whether d is reachable from s using Dijkstra’s algorithm
+bool Graph::isReachable(int s, int d)
+{
+    // are the nodes equal
+    if (s == d){
+        return true;
+    }
+    
+    // Mark all the vertices as not visited
+    bool *visited = new bool[V];
+    for (int i = 0; i < V; i++){
+        visited[i] = false;
+    }
+    
+    // Create a queue for BFS
+    list<int> queue;
+    
+    // Mark the current node as visited and enqueue it
+    visited[s] = true;
+    queue.push_back(s);
+    
+    // ready to use to get all adjacent vertices of a vertex
+    list<int>::iterator i;
+    
+    while (!queue.empty())
+    {
+        // Dequeue a vertex from queue and add to path
+        s = queue.front();
+        path[pindex] = queue.front();
+        pindex++;
+        queue.pop_front();
+        
+        // Get all adjacent vertices of the dequeued vertex s
+        // If a adjacent has not been visited, then mark it visited
+        // and enqueue it
+        for (i = adj[s].begin(); i != adj[s].end(); ++i)
+        {
+            // If this adjacent node is the destination node, then return true and add end of path
+            if (*i == d){
+                path[pindex] = d;
+                pindex++;
+                return true;
+            }
+            
+            //continue to do BFS
+            if (!visited[*i])
+            {
+                visited[*i] = true;
+                queue.push_back(*i);
+            }
+        }
+    }
+    
+    return false;
+}
+void buildGraph(){
+    g.addEdge(0, 4);
+    g.addEdge(0, 5);
+    g.addEdge(1, 5);
+    g.addEdge(1, 6);
+    g.addEdge(2, 6);
+    g.addEdge(2, 7);
+    g.addEdge(3, 7);
+    g.addEdge(4, 8);
+    g.addEdge(5, 8);
+    g.addEdge(5, 9);
+    g.addEdge(6, 9);
+    g.addEdge(6, 10);
+    g.addEdge(7, 10);
+    g.addEdge(7, 11);
+    g.addEdge(8, 12);
+    g.addEdge(8, 13);
+    g.addEdge(9, 13);
+    g.addEdge(9, 14);
+    g.addEdge(10, 14);
+    g.addEdge(10, 15);
+    g.addEdge(11, 15);
+    g.addEdge(12, 16);
+    g.addEdge(13, 16);
+    g.addEdge(13, 17);
+    g.addEdge(14, 17);
+    g.addEdge(14, 18);
+    g.addEdge(15, 18);
+    g.addEdge(15, 19);
+    g.addEdge(16, 20);
+    g.addEdge(16, 21);
+    g.addEdge(17, 21);
+    g.addEdge(17, 22);
+    g.addEdge(18, 22);
+    g.addEdge(18, 23);
+    g.addEdge(19, 23);
+    g.addEdge(20, 24);
+    g.addEdge(21, 24);
+    g.addEdge(21, 25);
+    g.addEdge(22, 25);
+    g.addEdge(22, 26);
+    g.addEdge(23, 26);
+    g.addEdge(23, 27);
+    g.addEdge(24, 28);
+    g.addEdge(24, 29);
+    g.addEdge(25, 29);
+    g.addEdge(25, 30);
+    g.addEdge(26, 30);
+    g.addEdge(26, 31);
+    g.addEdge(27, 31);
 }
