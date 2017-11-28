@@ -13,7 +13,7 @@ public:
     bool isReachable(int s, int d); // returns true if there is a path from s to d
 };
 
-string board[18][18];
+string board[18][18]; //[row][column]
 int Bcount = 1;
 int Rcount = 1;
 int r =0;
@@ -38,10 +38,18 @@ void userKingKillCheck();
 //graph variables and functions
 int path[32];
 int pindex = 0;
+//graph for normal checkers
 Graph g(32);
 void buildGraph();
+//graph for king checkers
+Graph gk(32);
+void buildKingGraph();
+int boardToGraph(int row, int column);
+int graphToRow(int vertex);
+int graphToColumn(int vertex);
 
 int main() {
+    srand((int)time(NULL));
     int menu=0;
     
     while(menu!=3){
@@ -55,6 +63,7 @@ int main() {
         if(menu == 1){
             printboard();
             buildGraph();
+            buildKingGraph();
             while(Bcount!=0||Rcount!=0){
                 userinput();
                 updateboard();
@@ -525,6 +534,8 @@ void Graph::addEdge(int v, int w)
 // A BFS based function to check whether d is reachable from s using Dijkstra’s algorithm
 bool Graph::isReachable(int s, int d)
 {
+    //set path to all zeros for new path
+    fill(path, path+32, 0);
     // are the nodes equal
     if (s == d){
         return true;
@@ -627,4 +638,260 @@ void buildGraph(){
     g.addEdge(26, 30);
     g.addEdge(26, 31);
     g.addEdge(27, 31);
+}
+void buildKingGraph(){
+    gk.addEdge(0, 4); //pair
+    gk.addEdge(4, 0);
+    gk.addEdge(0, 5); //pair
+    gk.addEdge(5, 0);
+    gk.addEdge(1, 5); //pair
+    gk.addEdge(5, 1);
+    gk.addEdge(1, 6); //pair
+    gk.addEdge(6, 1);
+    gk.addEdge(2, 6); //pair
+    gk.addEdge(6, 2);
+    gk.addEdge(2, 7); //pair
+    gk.addEdge(7, 2);
+    gk.addEdge(3, 7); //pair
+    gk.addEdge(7, 3);
+    gk.addEdge(4, 8); //pair
+    gk.addEdge(8, 4);
+    gk.addEdge(5, 8); //pair
+    gk.addEdge(8, 5);
+    gk.addEdge(5, 9); //pair
+    gk.addEdge(9, 5);
+    gk.addEdge(6, 9); //pair
+    gk.addEdge(9, 6);
+    gk.addEdge(6, 10); //pair
+    gk.addEdge(10, 6);
+    gk.addEdge(7, 10); //pair
+    gk.addEdge(10, 7);
+    gk.addEdge(7, 11); //pair
+    gk.addEdge(11, 7);
+    gk.addEdge(8, 12); //pair
+    gk.addEdge(12, 8);
+    gk.addEdge(8, 13); //pair
+    gk.addEdge(13, 8);
+    gk.addEdge(9, 13); //pair
+    gk.addEdge(13, 9);
+    gk.addEdge(9, 14); //pair
+    gk.addEdge(14, 9);
+    gk.addEdge(10, 14); //pair
+    gk.addEdge(14, 10);
+    gk.addEdge(10, 15); //pair
+    gk.addEdge(15, 10);
+    gk.addEdge(11, 15); //pair
+    gk.addEdge(15, 11);
+    gk.addEdge(12, 16); //pair
+    gk.addEdge(16, 12);
+    gk.addEdge(13, 16); //pair
+    gk.addEdge(16, 13);
+    gk.addEdge(13, 17); //pair
+    gk.addEdge(17, 13);
+    gk.addEdge(14, 17); //pair
+    gk.addEdge(17, 14);
+    gk.addEdge(14, 18); //pair
+    gk.addEdge(18, 14);
+    gk.addEdge(15, 18); //pair
+    gk.addEdge(18, 15);
+    gk.addEdge(15, 19); //pair
+    gk.addEdge(19, 15);
+    gk.addEdge(16, 20); //pair
+    gk.addEdge(20, 16);
+    gk.addEdge(16, 21); //pair
+    gk.addEdge(21, 16);
+    gk.addEdge(17, 21); //pair
+    gk.addEdge(21, 17);
+    gk.addEdge(17, 22); //pair
+    gk.addEdge(22, 17);
+    gk.addEdge(18, 22); //pair
+    gk.addEdge(22, 18);
+    gk.addEdge(18, 23); //pair
+    gk.addEdge(23, 18);
+    gk.addEdge(19, 23); //pair
+    gk.addEdge(23, 19);
+    gk.addEdge(20, 24); //pair
+    gk.addEdge(24, 20);
+    gk.addEdge(21, 24); //pair
+    gk.addEdge(24, 21);
+    gk.addEdge(21, 25); //pair
+    gk.addEdge(25, 21);
+    gk.addEdge(22, 25); //pair
+    gk.addEdge(25, 22);
+    gk.addEdge(22, 26); //pair
+    gk.addEdge(26, 22);
+    gk.addEdge(23, 26); //pair
+    gk.addEdge(26, 23);
+    gk.addEdge(23, 27); //pair
+    gk.addEdge(27, 23);
+    gk.addEdge(24, 28); //pair
+    gk.addEdge(28, 24);
+    gk.addEdge(24, 29); //pair
+    gk.addEdge(29, 24);
+    gk.addEdge(25, 29); //pair
+    gk.addEdge(29, 25);
+    gk.addEdge(25, 30); //pair
+    gk.addEdge(30, 25);
+    gk.addEdge(26, 30); //pair
+    gk.addEdge(30, 26);
+    gk.addEdge(26, 31); //pair
+    gk.addEdge(31, 26);
+    gk.addEdge(27, 31); //pair
+    gk.addEdge(31, 27);
+}
+int boardToGraph(int row, int column){
+    int vertex = 0;
+    if(row == 2 && column == 4){
+        vertex = 0;
+    }
+    if(row == 2 && column == 8){
+        vertex = 1;
+    }
+    if(row == 2 && column == 12){
+        vertex = 2;
+    }
+    if(row == 2 && column == 16){
+        vertex = 3;
+    }
+    if(row == 4 && column == 2){
+        vertex = 4;
+    }
+    if(row == 4 && column == 6){
+        vertex = 5;
+    }
+    if(row == 4 && column == 10){
+        vertex = 6;
+    }
+    if(row == 4 && column == 14){
+        vertex = 7;
+    }
+    if(row == 6 && column == 4){
+        vertex = 8;
+    }
+    if(row == 6 && column == 8){
+        vertex = 9;
+    }
+    if(row == 6 && column == 12){
+        vertex = 10;
+    }
+    if(row == 6 && column == 16){
+        vertex = 11;
+    }
+    if(row == 8 && column == 2){
+        vertex = 12;
+    }
+    if(row == 8 && column == 6){
+        vertex = 13;
+    }
+    if(row == 8 && column == 10){
+        vertex = 14;
+    }
+    if(row == 8 && column == 14){
+        vertex = 15;
+    }
+    if(row == 10 && column == 4){
+        vertex = 16;
+    }
+    if(row == 10 && column == 8){
+        vertex = 17;
+    }
+    if(row == 10 && column == 12){
+        vertex = 18;
+    }
+    if(row == 10 && column == 16){
+        vertex = 19;
+    }
+    if(row == 12 && column == 2){
+        vertex = 20;
+    }
+    if(row == 12 && column == 6){
+        vertex = 21;
+    }
+    if(row == 12 && column == 10){
+        vertex = 22;
+    }
+    if(row == 12 && column == 14){
+        vertex = 23;
+    }
+    if(row == 14 && column == 4){
+        vertex = 24;
+    }
+    if(row == 14 && column == 8){
+        vertex = 25;
+    }
+    if(row == 14 && column == 12){
+        vertex = 26;
+    }
+    if(row == 14 && column == 16){
+        vertex = 27;
+    }
+    if(row == 16 && column == 2){
+        vertex = 28;
+    }
+    if(row == 16 && column == 6){
+        vertex = 29;
+    }
+    if(row == 16 && column == 10){
+        vertex = 30;
+    }
+    if(row == 16 && column == 14){
+        vertex = 31;
+    }
+    return vertex;
+}
+int graphToRow(int vertex){
+    int row = 0;
+    if(vertex == 0 || vertex == 1 || vertex == 2 || vertex == 3){
+        row = 2;
+    }
+    if(vertex == 4 || vertex == 5 || vertex == 6 || vertex == 7){
+        row = 4;
+    }
+    if(vertex == 8 || vertex == 9 || vertex == 10 || vertex == 11){
+        row = 6;
+    }
+    if(vertex == 12 || vertex == 13 || vertex == 14 || vertex == 15){
+        row = 8;
+    }
+    if(vertex == 16 || vertex == 17 || vertex == 18 || vertex == 19){
+        row = 10;
+    }
+    if(vertex == 20 || vertex == 21 || vertex == 22 || vertex == 23){
+        row = 12;
+    }
+    if(vertex == 24 || vertex == 25 || vertex == 26 || vertex == 27){
+        row = 14;
+    }
+    if(vertex == 28 || vertex == 29 || vertex == 30 || vertex == 31){
+        row = 16;
+    }
+    return row;
+}
+int graphToColumn(int vertex){
+    int column = 0;
+    if(vertex == 4 || vertex == 12 || vertex == 20 || vertex == 28){
+        column = 2;
+    }
+    if(vertex == 0 || vertex == 8 || vertex == 16 || vertex == 24){
+        column = 4;
+    }
+    if(vertex == 5 || vertex == 13 || vertex == 21 || vertex == 29){
+        column = 6;
+    }
+    if(vertex == 1 || vertex == 9 || vertex == 17 || vertex == 25){
+        column = 8;
+    }
+    if(vertex == 6 || vertex == 14 || vertex == 22 || vertex == 30){
+        column = 10;
+    }
+    if(vertex == 2 || vertex == 10 || vertex == 18 || vertex == 26){
+        column = 12;
+    }
+    if(vertex == 7 || vertex == 15 || vertex == 23 || vertex == 31){
+        column = 14;
+    }
+    if(vertex == 3 || vertex == 11 || vertex == 19 || vertex == 27){
+        column = 16;
+    }
+    return column;
 }
