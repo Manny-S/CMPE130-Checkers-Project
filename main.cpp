@@ -44,9 +44,15 @@ void buildGraph();
 //graph for king checkers
 Graph gk(32);
 void buildKingGraph();
+//helper functions for graph
 int boardToGraph(int row, int column);
 int graphToRow(int vertex);
 int graphToColumn(int vertex);
+//cpu movement functions
+void cpuMove();
+bool normalMove();
+bool kingMove();
+bool endMove();
 
 int main() {
     srand((int)time(NULL));
@@ -66,6 +72,7 @@ int main() {
             buildKingGraph();
             while(Bcount!=0||Rcount!=0){
                 userinput();
+                cpuMove();
                 updateboard();
                 count();
             }
@@ -536,6 +543,7 @@ bool Graph::isReachable(int s, int d)
 {
     //set path to all zeros for new path
     fill(path, path+32, 0);
+    pindex = 0;
     // are the nodes equal
     if (s == d){
         return true;
@@ -894,4 +902,140 @@ int graphToColumn(int vertex){
         column = 16;
     }
     return column;
+}
+void cpuMove(){
+    cout << "CPU is thinking..." << endl;
+    int attempt = 0;
+    bool moveFound = false;
+    int method = 0;
+    while (attempt < 5000) {
+        method = rand()%3;
+        if (method == 0) {
+            moveFound = normalMove();
+            if(moveFound == true){ break; }
+        }
+        if (method == 1) {
+            moveFound = kingMove();
+            if(moveFound == true){ break; }
+        }
+        if (method == 2) {
+            moveFound = endMove();
+            if(moveFound == true){ break; }
+        }
+        attempt++;
+    }
+    if(moveFound == true){
+        cout << "CPU has made it's move." << endl;
+    }
+    else{
+        cout << "CPU has decided to skip it's turn." << endl;
+    }
+}
+bool normalMove(){
+    //black checker variables
+    int start = 0;
+    int sRow = 0;
+    int sColumn = 0;
+    
+    //red checker variables
+    int end = 0;
+    int eRow = 0;
+    int eColumn = 0;
+    
+    //check every black checker with every red checker
+    for (start = 31; start > 0; start--) {
+        sRow = graphToRow(start);
+        sColumn = graphToColumn(start);
+        if (board[sRow][sColumn] == "b") {
+            for (end = 0; end < 32; end++) {
+                eRow = graphToRow(end);
+                eColumn = graphToColumn(end);
+                if (board[eRow][eColumn] == "r" || board[eRow][eColumn] == "R") {
+                    //find the path if there is one
+                    if (g.isReachable(start, end)) {
+                        int next = path[1];
+                        int nRow = graphToRow(next);
+                        int nColumn = graphToColumn(next);
+                        string place = board[nRow][nColumn];
+                        if (" " == place) {
+                            board[nRow][nColumn] = board[sRow][sColumn];
+                            board[sRow][sColumn] = " ";
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+bool kingMove(){
+    //black king checker variables
+    int start = 0;
+    int sRow = 0;
+    int sColumn = 0;
+    
+    //red checker variables
+    int end = 0;
+    int eRow = 0;
+    int eColumn = 0;
+    
+    //check every black king checker with every red checker
+    for (start = 31; start > 0; start--) {
+        sRow = graphToRow(start);
+        sColumn = graphToColumn(start);
+        if (board[sRow][sColumn] == "B") { //minor adjustment to work with kings
+            for (end = 0; end < 32; end++) {
+                eRow = graphToRow(end);
+                eColumn = graphToColumn(end);
+                if (board[eRow][eColumn] == "r" || board[eRow][eColumn] == "R") {
+                    //find the path if there is one
+                    if (g.isReachable(start, end)) {
+                        int next = path[1];
+                        int nRow = graphToRow(next);
+                        int nColumn = graphToColumn(next);
+                        string place = board[nRow][nColumn];
+                        if (" " == place) {
+                            board[nRow][nColumn] = board[sRow][sColumn];
+                            board[sRow][sColumn] = " ";
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+bool endMove(){
+    //black checker variables
+    int start = 0;
+    int sRow = 0;
+    int sColumn = 0;
+    
+    //end of board variables
+    int end = 0;
+    
+    //check every black checker with every end vertex
+    for (start = 31; start > 0; start--) {
+        sRow = graphToRow(start);
+        sColumn = graphToColumn(start);
+        if (board[sRow][sColumn] == "b") {
+            for (end = 28; end < 32; end++) {
+                //find the path if there is one
+                if (g.isReachable(start, end)) {
+                    int next = path[1];
+                    int nRow = graphToRow(next);
+                    int nColumn = graphToColumn(next);
+                    string place = board[nRow][nColumn];
+                    if (" " == place) {
+                        board[nRow][nColumn] = board[sRow][sColumn];
+                        board[sRow][sColumn] = " ";
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
