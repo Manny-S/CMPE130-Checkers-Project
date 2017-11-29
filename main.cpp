@@ -229,7 +229,7 @@ void updateboard(){
     }
 }
 
-/* working on it (won't allow king to jump piece)
+
  void userKingMoveCheck(){
  //checks if space is empty to move
  if(board[r1][c1]==" "){
@@ -315,12 +315,8 @@ void updateboard(){
  userKingMoveCheck();
  }
  }
- */
+ 
 void userinput(){
-    /* int r =0;
-     int c =0;
-     int r1=0;
-     int c1=0;*/
     while(legal!=true){
         cout<<"Your turn"<<endl;
         cout<<"What piece would you like to move?"<<endl;
@@ -332,7 +328,7 @@ void userinput(){
         r1=rowinput();
         
         if(board[r][c]=="R"){
-            //userKingMoveCheck();
+            userKingKillCheck();
         }
         else{
             userkillcheck();
