@@ -547,9 +547,9 @@ bool Graph::isReachable(int s, int d)
     //set path to all zeros for new path
     fill(path, path+32, 0);
     pindex = 0;
-    // are the nodes equal
+    // are the checkers equal
     if (s == d){
-        return true;
+        return false; //should not happen
     }
     
     // Mark all the vertices as not visited
@@ -561,7 +561,7 @@ bool Graph::isReachable(int s, int d)
     // Create a queue for BFS
     list<int> queue;
     
-    // Mark the current node as visited and enqueue it
+    // Mark the current vertex as visited and enqueue it
     visited[s] = true;
     queue.push_back(s);
     
@@ -581,7 +581,7 @@ bool Graph::isReachable(int s, int d)
         // and enqueue it
         for (i = adj[s].begin(); i != adj[s].end(); ++i)
         {
-            // If this adjacent node is the destination node, then return true and add end of path
+            // If this adjacent vertex is the destination vertex, then return true and add end of path
             if (*i == d){
                 path[pindex] = d;
                 pindex++;
@@ -995,7 +995,7 @@ bool kingMove(){
                 eColumn = graphToColumn(end);
                 if (board[eRow][eColumn] == "r" || board[eRow][eColumn] == "R") {
                     //find the path if there is one
-                    if (g.isReachable(start, end)) {
+                    if (gk.isReachable(start, end)) {
                         int next = path[1];
                         int nRow = graphToRow(next);
                         int nColumn = graphToColumn(next);
@@ -1046,7 +1046,7 @@ bool endMove(){
 }
 bool killMove(){
     int think = 0;
-    while (think < 5) {
+    while (think < 5) { //should there be more attempts??
         int attacker = rand()%32;
         int aRow = graphToRow(attacker);
         int aColumn = graphToColumn(attacker);
