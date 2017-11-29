@@ -32,7 +32,7 @@ void count();
 void usermovecheck();
 void userkillcheck();
 void kingcheck();
-//void userKingMoveCheck();
+void userKingMoveCheck();
 void userKingKillCheck();
 
 //graph variables and functions
