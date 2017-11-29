@@ -53,6 +53,7 @@ void cpuMove();
 bool normalMove();
 bool kingMove();
 bool endMove();
+bool killMove();
 
 int main() {
     srand((int)time(NULL));
@@ -60,8 +61,8 @@ int main() {
     
     while(menu!=3){
         cout<<"---CHECKERS MENU---"<<endl
-        <<"1. 1 player"<<endl
-        <<"2. 2 players"<<endl
+        <<"1. Player VS Computer"<<endl
+        <<"2. How to Play"<<endl
         <<"3. Exit"<<endl;
         
         cin>>menu;
@@ -78,14 +79,11 @@ int main() {
             }
         }
         if(menu == 2){
-            printboard();
-            while(Bcount!=0||Rcount!=0){
-                userinput();
-                updateboard();
-                count();
-            }
+            cout << "Please visit the webpage below for more info:" << endl;
+            cout << "https://www.itsyourturn.com/t_helptopic2030.html" << endl;
         }
     }
+    cout << "GoodBye!" << endl;
     return 0;
 }
 
@@ -526,6 +524,15 @@ void count(){
     Bcount--;// to take the count off the B labeling the column
     cout << "Red checkers left = " << Rcount << endl;
     cout << "Black checkers left = " << Bcount << endl;
+    if (Bcount == 0) {
+        cout << "You Win!" << endl;
+    }
+    else if (Rcount == 0){
+        cout << "You Lose!" << endl;
+    }
+    else{
+        //left blank
+    }
 }
 Graph::Graph(int V)
 {
@@ -908,6 +915,8 @@ void cpuMove(){
     int attempt = 0;
     bool moveFound = false;
     int method = 0;
+    moveFound = killMove();
+    if(moveFound){ attempt = 5000; }
     while (attempt < 5000) {
         method = rand()%3;
         if (method == 0) {
@@ -1036,6 +1045,70 @@ bool endMove(){
                 }
             }
         }
+    }
+    return false;
+}
+bool killMove(){
+    int think = 0;
+    while (think < 5) {
+        int attacker = rand()%32;
+        int aRow = graphToRow(attacker);
+        int aColumn = graphToColumn(attacker);
+        //if checker is normal
+        if (board[aRow][aColumn] == "b") {
+            if(board[aRow+2][aColumn+2] == "r" || board[aRow+2][aColumn+2] == "R"){ //lower right
+                if(board[aRow+4][aColumn+4] == " "){
+                    board[aRow+4][aColumn+4] = board[aRow][aColumn];
+                    board[aRow][aColumn] = " ";
+                    board[aRow+2][aColumn+2] = " ";
+                    return true;
+                }
+            }
+            else if(board[aRow+2][aColumn-2] == "r" || board[aRow+2][aColumn-2] == "R"){ //lower left
+                if(board[aRow+4][aColumn-4] == " "){
+                    board[aRow+4][aColumn-4] = board[aRow][aColumn];
+                    board[aRow][aColumn] = " ";
+                    board[aRow+2][aColumn-2] = " ";
+                    return true;
+                }
+            }
+        }
+        //if checker is king
+        else if (board[aRow][aColumn] == "B"){
+            if(board[aRow+2][aColumn+2] == "r" || board[aRow+2][aColumn+2] == "R"){ //lower right
+                if(board[aRow+4][aColumn+4] == " "){
+                    board[aRow+4][aColumn+4] = board[aRow][aColumn];
+                    board[aRow][aColumn] = " ";
+                    board[aRow+2][aColumn+2] = " ";
+                    return true;
+                }
+            }
+            else if(board[aRow+2][aColumn-2] == "r" || board[aRow+2][aColumn-2] == "R"){ //lower left
+                if(board[aRow+4][aColumn-4] == " "){
+                    board[aRow+4][aColumn-4] = board[aRow][aColumn];
+                    board[aRow][aColumn] = " ";
+                    board[aRow+2][aColumn-2] = " ";
+                    return true;
+                }
+            }
+            else if(board[aRow-2][aColumn+2] == "r" || board[aRow-2][aColumn+2] == "R"){ //upper right
+                if(board[aRow-4][aColumn+4] == " "){
+                    board[aRow-4][aColumn+4] = board[aRow][aColumn];
+                    board[aRow][aColumn] = " ";
+                    board[aRow-2][aColumn+2] = " ";
+                    return true;
+                }
+            }
+            else if(board[aRow-2][aColumn-2] == "r" || board[aRow-2][aColumn-2] == "R"){ //upper left
+                if(board[aRow-4][aColumn-4] == " "){
+                    board[aRow-4][aColumn-4] = board[aRow][aColumn];
+                    board[aRow][aColumn] = " ";
+                    board[aRow-2][aColumn-2] = " ";
+                    return true;
+                }
+            }
+        }
+        think++;
     }
     return false;
 }
