@@ -530,20 +530,17 @@ void count(){
         //left blank
     }
 }
-Graph::Graph(int V)
-{
+Graph::Graph(int V){
     this->V = V;
     adj = new list<int> [V];
 }
 
-void Graph::addEdge(int v, int w)
-{
+void Graph::addEdge(int v, int w){
     adj[v].push_back(w); // Add w to v’s list.
 }
 
-// A BFS based function to check whether d is reachable from s using Dijkstra’s algorithm
-bool Graph::isReachable(int s, int d)
-{
+// A BFS based function to check whether d is reachable from s
+bool Graph::isReachable(int s, int d){
     //set path to all zeros for new path
     fill(path, path+32, 0);
     pindex = 0;
@@ -568,8 +565,7 @@ bool Graph::isReachable(int s, int d)
     // ready to use to get all adjacent vertices of a vertex
     list<int>::iterator i;
     
-    while (!queue.empty())
-    {
+    while (!queue.empty()){
         // Dequeue a vertex from queue and add to path
         s = queue.front();
         path[pindex] = queue.front();
@@ -579,8 +575,7 @@ bool Graph::isReachable(int s, int d)
         // Get all adjacent vertices of the dequeued vertex s
         // If a adjacent has not been visited, then mark it visited
         // and enqueue it
-        for (i = adj[s].begin(); i != adj[s].end(); ++i)
-        {
+        for (i = adj[s].begin(); i != adj[s].end(); ++i){
             // If this adjacent vertex is the destination vertex, then return true and add end of path
             if (*i == d){
                 path[pindex] = d;
@@ -589,8 +584,7 @@ bool Graph::isReachable(int s, int d)
             }
             
             //continue to do BFS
-            if (!visited[*i])
-            {
+            if (!visited[*i]){
                 visited[*i] = true;
                 queue.push_back(*i);
             }
@@ -912,7 +906,10 @@ void cpuMove(){
     bool moveFound = false;
     int method = 0;
     moveFound = killMove();
-    if(moveFound){ attempt = 5000; }
+    if(moveFound){
+        attempt = 5001;
+        cout << "CPU has taken one of your pieces!" << endl;
+    }
     while (attempt < 5000) {
         method = rand()%3;
         if (method == 0) {
@@ -1046,7 +1043,7 @@ bool endMove(){
 }
 bool killMove(){
     int think = 0;
-    while (think < 5) { //should there be more attempts??
+    while (think < 20) {
         int attacker = rand()%32;
         int aRow = graphToRow(attacker);
         int aColumn = graphToColumn(attacker);
