@@ -1,6 +1,22 @@
 #include "checkers.hpp"
 using namespace std;
 
+//graph variables
+Graph g(32); //normal
+Graph gk(32); //king
+int path[32];
+int pindex = 0;
+//board variables
+int r =0;
+int c =0;
+int r1=0;
+int c1=0;
+bool legal = false;
+string board[18][18]; //[row][column]
+int Bcount = 1;
+int Rcount = 1;
+
+
 void printboard(){
     board[0][0]=" ";
     board[2][0] = "1";
@@ -957,7 +973,7 @@ bool endMove(){
 }
 bool killMove(){
     int think = 0;
-    while (think < 20) {
+    while (think < 15) {
         int attacker = rand()%32;
         int aRow = graphToRow(attacker);
         int aColumn = graphToColumn(attacker);

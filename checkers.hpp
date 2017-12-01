@@ -15,14 +15,9 @@ public:
     bool isReachable(int s, int d); // returns true if there is a path from s to d
 };
 
-string board[18][18]; //[row][column]
-int Bcount = 1;
-int Rcount = 1;
-int r =0;
-int c =0;
-int r1=0;
-int c1=0;
-bool legal = false;
+extern int Bcount;
+extern int Rcount;
+
 int Redcount();
 int Blackcount();
 int rowinput();
@@ -38,13 +33,10 @@ void userKingMoveCheck();
 void userKingKillCheck();
 
 //graph variables and functions
-int path[32];
-int pindex = 0;
+
 //graph for normal checkers
-Graph g(32);
 void buildGraph();
 //graph for king checkers
-Graph gk(32);
 void buildKingGraph();
 //helper functions for graph
 int boardToGraph(int row, int column);

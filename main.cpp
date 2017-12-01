@@ -2,7 +2,6 @@
 #include "checkers.hpp"
 using namespace std;
 
-
 int main() {
     srand((int)time(NULL));
     int menu=0;
